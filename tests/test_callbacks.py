@@ -15,8 +15,8 @@ def test_early_stopping_triggers_after_patience() -> None:
     es = EarlyStopping(patience=2, monitor="val_loss", mode="min")
     assert not es({"val_loss": 1.0})  # baseline
     assert not es({"val_loss": 0.9})  # improved
-    assert not es({"val_loss": 0.95}) # worse 1
-    stop = es({"val_loss": 0.95})     # worse 2 → patience exhausted
+    assert not es({"val_loss": 0.95})  # worse 1
+    stop = es({"val_loss": 0.95})  # worse 2 → patience exhausted
     assert stop is True
     assert es.should_stop is True
 
@@ -25,7 +25,7 @@ def test_early_stopping_resets_counter_on_improvement() -> None:
     es = EarlyStopping(patience=2, monitor="val_loss", mode="min")
     es({"val_loss": 1.0})
     es({"val_loss": 0.99})  # plateau-ish
-    es({"val_loss": 0.5})   # big improvement → reset counter
+    es({"val_loss": 0.5})  # big improvement → reset counter
     assert es.counter == 0
     assert es.best == 0.5
     assert es.should_stop is False
@@ -35,7 +35,7 @@ def test_early_stopping_max_mode_uses_higher_is_better() -> None:
     es = EarlyStopping(patience=1, monitor="val_acc", mode="max")
     assert not es({"val_acc": 0.80})
     assert not es({"val_acc": 0.85})  # improved
-    stop = es({"val_acc": 0.83})       # worse → patience=1 exhausted
+    stop = es({"val_acc": 0.83})  # worse → patience=1 exhausted
     assert stop is True
 
 

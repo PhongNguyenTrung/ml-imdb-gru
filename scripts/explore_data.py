@@ -20,7 +20,9 @@ from imdb_gru.data import IMDBLoader
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="IMDB EDA driver (Req 1).")
-    parser.add_argument("--n-samples", type=int, default=5, help="Number of samples to display (>=5).")
+    parser.add_argument(
+        "--n-samples", type=int, default=5, help="Number of samples to display (>=5)."
+    )
     parser.add_argument("--split", default="train", choices=["train", "test"])
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--cache-dir", default=None)

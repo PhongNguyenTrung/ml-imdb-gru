@@ -52,7 +52,7 @@ class TrainerConfig:
     log_dir: str = "artifacts/runs"
     experiment_name: str = "base"
     save_best: bool = True
-    monitor: str = "val_loss"      # "val_loss" (minimise) or "val_acc" (maximise)
+    monitor: str = "val_loss"  # "val_loss" (minimise) or "val_acc" (maximise)
     early_stopping_patience: int | None = 3
 
     def __post_init__(self) -> None:
@@ -187,7 +187,9 @@ class Trainer:
                     self.optimizer.zero_grad(set_to_none=True)
                     loss.backward()
                     if self.config.grad_clip is not None:
-                        torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.config.grad_clip)
+                        torch.nn.utils.clip_grad_norm_(
+                            self.model.parameters(), self.config.grad_clip
+                        )
                     self.optimizer.step()
 
                 bsz = labels.size(0)
@@ -195,7 +197,11 @@ class Trainer:
                 acc_meter.update(binary_accuracy_from_logits(logits.detach(), labels), weight=bsz)
                 step += 1
 
-                if training and self._tb_writer is not None and step % self.config.log_every_n_steps == 0:
+                if (
+                    training
+                    and self._tb_writer is not None
+                    and step % self.config.log_every_n_steps == 0
+                ):
                     global_step = (epoch - 1) * len(loader) + step
                     self._tb_writer.add_scalar("train/loss_step", loss.item(), global_step)
 
@@ -223,6 +229,7 @@ class Trainer:
         """
         try:
             from torch.utils.tensorboard import SummaryWriter
+
             return SummaryWriter(log_dir=str(self.run_dir / "tb"))
         except Exception:  # pragma: no cover — TB missing or init failed
             return None

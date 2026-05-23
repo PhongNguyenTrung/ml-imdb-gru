@@ -102,16 +102,21 @@ def test_confusion_matrix_plot_renders(tmp_path) -> None:
 # -------------------------------------------------------------- ErrorAnalyzer
 
 
-def _make_result(
-    y_true: list[int], y_pred: list[int], probs: list[float]
-) -> EvaluationResult:
+def _make_result(y_true: list[int], y_pred: list[int], probs: list[float]) -> EvaluationResult:
     yt = np.array(y_true)
     yp = np.array(y_pred)
     from sklearn.metrics import confusion_matrix
+
     return EvaluationResult(
-        y_true=yt, y_pred=yp, y_proba=np.array(probs),
+        y_true=yt,
+        y_pred=yp,
+        y_proba=np.array(probs),
         confusion=confusion_matrix(yt, yp, labels=[0, 1]),
-        report="", accuracy=0.0, precision=0.0, recall=0.0, f1=0.0,
+        report="",
+        accuracy=0.0,
+        precision=0.0,
+        recall=0.0,
+        f1=0.0,
     )
 
 
@@ -121,7 +126,8 @@ def test_error_analyzer_separates_fp_and_fn() -> None:
     #   idx 1: FN (true=pos, pred=neg)
     #   idx 2: TP, idx 3: TN
     result = _make_result(
-        y_true=[0, 1, 1, 0], y_pred=[1, 0, 1, 0],
+        y_true=[0, 1, 1, 0],
+        y_pred=[1, 0, 1, 0],
         probs=[0.95, 0.10, 0.80, 0.05],
     )
     texts = ["fp text", "fn text", "tp text", "tn text"]
@@ -155,7 +161,9 @@ def test_error_analyzer_text_length_mismatch_raises() -> None:
 
 def test_error_type_string_classification() -> None:
     result = _make_result(
-        y_true=[0, 1], y_pred=[1, 0], probs=[0.9, 0.1],
+        y_true=[0, 1],
+        y_pred=[1, 0],
+        probs=[0.9, 0.1],
     )
     analyzer = ErrorAnalyzer(result, ["fp_text", "fn_text"])
     errs = analyzer.collect_errors("both")

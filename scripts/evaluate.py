@@ -24,7 +24,11 @@ from imdb_gru.visualization import plot_learning_curves
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Evaluate a trained IMDB-GRU model on the test split.")
-    p.add_argument("--run-dir", required=True, help="Run directory containing best.pt + config.json + vocab.json.")
+    p.add_argument(
+        "--run-dir",
+        required=True,
+        help="Run directory containing best.pt + config.json + vocab.json.",
+    )
     p.add_argument("--checkpoint-name", default="best.pt")
     p.add_argument("--batch-size", type=int, default=128)
     p.add_argument("--top-k-errors", type=int, default=5, help="FP/FN samples to print per class.")
@@ -58,7 +62,9 @@ def main() -> None:
     test_texts = list(test_split["text"])
     test_labels = list(test_split["label"])
     test_ds = IMDBDataset(test_texts, test_labels, tokenizer, vocab, max_len=cfg["data"]["max_len"])
-    test_loader = DataLoader(test_ds, batch_size=args.batch_size, shuffle=False, collate_fn=collate_batch)
+    test_loader = DataLoader(
+        test_ds, batch_size=args.batch_size, shuffle=False, collate_fn=collate_batch
+    )
 
     # 2) Reconstruct model & load weights.
     model_cfg = GRUClassifierConfig(
@@ -88,9 +94,14 @@ def main() -> None:
     # 4) Persist plots alongside the run artifacts (gitignored).
     figures = run_dir / "figures"
     Evaluator.plot_confusion_matrix(result, save_path=figures / "confusion_matrix.png")
-    Evaluator.plot_confusion_matrix(result, save_path=figures / "confusion_matrix_normalized.png", normalize=True)
-    plot_learning_curves(run_dir / "history.json", title=f"Learning Curves — {run_dir.name}",
-                          save_path=figures / "learning_curves.png")
+    Evaluator.plot_confusion_matrix(
+        result, save_path=figures / "confusion_matrix_normalized.png", normalize=True
+    )
+    plot_learning_curves(
+        run_dir / "history.json",
+        title=f"Learning Curves — {run_dir.name}",
+        save_path=figures / "learning_curves.png",
+    )
 
     # 5) Error analysis.
     analyzer = ErrorAnalyzer(result, test_texts)

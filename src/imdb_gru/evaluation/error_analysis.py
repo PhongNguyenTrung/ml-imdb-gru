@@ -22,7 +22,7 @@ from imdb_gru.evaluation.evaluator import EvaluationResult
 
 @dataclass
 class MisclassifiedSample:
-    index: int          # position in the test set
+    index: int  # position in the test set
     text: str
     true_label: int
     predicted_label: int
@@ -113,8 +113,12 @@ class ErrorAnalyzer:
         print("\n=== Error Analysis ===")
         print(f"Test samples: {n_total}")
         print(f"Total errors: {n_errors}  (error rate = {n_errors / n_total:.2%})")
-        print(f"False Positives (true={LABEL_NAMES[0]}, pred={LABEL_NAMES[1]}): {self.result.confusion[0, 1]}")
-        print(f"False Negatives (true={LABEL_NAMES[1]}, pred={LABEL_NAMES[0]}): {self.result.confusion[1, 0]}")
+        print(
+            f"False Positives (true={LABEL_NAMES[0]}, pred={LABEL_NAMES[1]}): {self.result.confusion[0, 1]}"
+        )
+        print(
+            f"False Negatives (true={LABEL_NAMES[1]}, pred={LABEL_NAMES[0]}): {self.result.confusion[1, 0]}"
+        )
 
         self._print_group("Top False Positives (most-confident wrongs)", fps, max_chars)
         self._print_group("Top False Negatives (most-confident wrongs)", fns, max_chars)

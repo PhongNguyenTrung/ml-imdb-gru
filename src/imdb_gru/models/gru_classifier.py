@@ -180,9 +180,7 @@ class GRUClassifier(nn.Module):
         emb = self.embedding(input_ids)
 
         # `enforce_sorted=False` lets us pass an unsorted lengths tensor.
-        packed = pack_padded_sequence(
-            emb, lengths.cpu(), batch_first=True, enforce_sorted=False
-        )
+        packed = pack_padded_sequence(emb, lengths.cpu(), batch_first=True, enforce_sorted=False)
 
         # h_n: (num_layers * num_dirs, B, H)
         _, h_n = self.gru(packed)

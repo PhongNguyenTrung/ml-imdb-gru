@@ -89,7 +89,9 @@ class AdditiveAttentionPooling(nn.Module):
         self.w = nn.Linear(hidden_dim, hidden_dim, bias=True)
         self.v = nn.Linear(hidden_dim, 1, bias=False)
 
-    def forward(self, hidden_states: torch.Tensor, mask: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    def forward(
+        self, hidden_states: torch.Tensor, mask: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         """Inputs
         ------
         hidden_states : (B, T, H)
@@ -141,9 +143,11 @@ class GRUAttentionClassifier(nn.Module):
         emb = self.embedding(input_ids)
         packed = pack_padded_sequence(emb, lengths.cpu(), batch_first=True, enforce_sorted=False)
         packed_out, _ = self.gru(packed)
-        hiddens, _ = pad_packed_sequence(packed_out, batch_first=True, total_length=input_ids.size(1))
+        hiddens, _ = pad_packed_sequence(
+            packed_out, batch_first=True, total_length=input_ids.size(1)
+        )
 
-        mask = (input_ids != self.config.padding_idx)
+        mask = input_ids != self.config.padding_idx
         context, _ = self.attention(hiddens, mask)
         logits = self.classifier(self.dropout(context)).squeeze(-1)
         return logits
@@ -223,7 +227,7 @@ class TransformerEncoderClassifier(nn.Module):
         del lengths  # encoder uses key_padding_mask, not lengths
         x = self.embedding(input_ids)
         x = self.pos_enc(x)
-        key_padding_mask = (input_ids == self.config.padding_idx)
+        key_padding_mask = input_ids == self.config.padding_idx
         encoded = self.encoder(x, src_key_padding_mask=key_padding_mask)
 
         # Masked mean pool — ignore <pad> positions.

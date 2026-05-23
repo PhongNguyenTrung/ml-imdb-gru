@@ -103,8 +103,12 @@ def plot_experiment_comparison(
         if not epochs_data:
             continue
         epochs = [e["epoch"] for e in epochs_data]
-        ax_loss.plot(epochs, [e["val_loss"] for e in epochs_data], marker="o", label=label, linewidth=1.6)
-        ax_acc.plot(epochs, [e["val_acc"] for e in epochs_data], marker="o", label=label, linewidth=1.6)
+        ax_loss.plot(
+            epochs, [e["val_loss"] for e in epochs_data], marker="o", label=label, linewidth=1.6
+        )
+        ax_acc.plot(
+            epochs, [e["val_acc"] for e in epochs_data], marker="o", label=label, linewidth=1.6
+        )
 
     ax_loss.set_title("Validation Loss across experiments")
     ax_loss.set_xlabel("Epoch")

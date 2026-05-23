@@ -11,7 +11,9 @@ def binary_accuracy_from_logits(logits: torch.Tensor, labels: torch.Tensor) -> f
     A logit > 0 corresponds to :math:`\\sigma(z) > 0.5`, i.e. predicted positive.
     """
     if logits.shape != labels.shape:
-        raise ValueError(f"shape mismatch: logits {tuple(logits.shape)} vs labels {tuple(labels.shape)}")
+        raise ValueError(
+            f"shape mismatch: logits {tuple(logits.shape)} vs labels {tuple(labels.shape)}"
+        )
     preds = (logits > 0.0).to(labels.dtype)
     correct = (preds == labels).float().sum().item()
     total = labels.numel()

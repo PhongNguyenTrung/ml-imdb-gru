@@ -39,8 +39,8 @@ if TYPE_CHECKING:
 @dataclass
 class EncodedSample:
     input_ids: torch.Tensor  # shape (max_len,), dtype long
-    length: int              # true (pre-pad) length, ∈ [1, max_len]
-    label: int               # 0 or 1
+    length: int  # true (pre-pad) length, ∈ [1, max_len]
+    label: int  # 0 or 1
 
 
 class IMDBDataset(Dataset[EncodedSample]):
@@ -184,16 +184,28 @@ def build_dataloaders(
 
     return IMDBDataModule(
         train_loader=DataLoader(
-            train_ds, batch_size=batch_size, num_workers=num_workers,
-            collate_fn=collate_batch, shuffle=True, pin_memory=pin_memory,
+            train_ds,
+            batch_size=batch_size,
+            num_workers=num_workers,
+            collate_fn=collate_batch,
+            shuffle=True,
+            pin_memory=pin_memory,
         ),
         val_loader=DataLoader(
-            val_ds, batch_size=batch_size, num_workers=num_workers,
-            collate_fn=collate_batch, shuffle=False, pin_memory=pin_memory,
+            val_ds,
+            batch_size=batch_size,
+            num_workers=num_workers,
+            collate_fn=collate_batch,
+            shuffle=False,
+            pin_memory=pin_memory,
         ),
         test_loader=DataLoader(
-            test_ds, batch_size=batch_size, num_workers=num_workers,
-            collate_fn=collate_batch, shuffle=False, pin_memory=pin_memory,
+            test_ds,
+            batch_size=batch_size,
+            num_workers=num_workers,
+            collate_fn=collate_batch,
+            shuffle=False,
+            pin_memory=pin_memory,
         ),
         vocabulary=vocab,
         tokenizer=tokenizer,

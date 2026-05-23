@@ -102,7 +102,9 @@ def main() -> None:
         experiment_name=cfg["logging"]["experiment_name"],
         early_stopping_patience=cfg["training"].get("early_stopping_patience"),
     )
-    trainer = Trainer(model=model, loss_fn=loss_fn, optimizer=optimizer, config=trainer_cfg, device=device)
+    trainer = Trainer(
+        model=model, loss_fn=loss_fn, optimizer=optimizer, config=trainer_cfg, device=device
+    )
 
     print(f"[train] device={device} | experiment={trainer_cfg.experiment_name}")
     history = trainer.fit(dm.train_loader, dm.val_loader)
@@ -112,7 +114,9 @@ def main() -> None:
     (run_dir / "config.json").write_text(json.dumps(cfg, indent=2), encoding="utf-8")
     dm.vocabulary.save(run_dir / "vocab.json")
     print(f"[train] artifacts saved to {run_dir}")
-    print(f"[train] best metric so far: epoch={trainer.checkpoint.best_epoch if trainer.checkpoint else 'n/a'}")
+    print(
+        f"[train] best metric so far: epoch={trainer.checkpoint.best_epoch if trainer.checkpoint else 'n/a'}"
+    )
 
 
 if __name__ == "__main__":

@@ -30,9 +30,13 @@ DEFAULT_LOG_DIR = REPO_ROOT / "artifacts" / "runs"
 def run_one(override_path: Path) -> None:
     print(f"\n{'=' * 70}\n>>> Running experiment: {override_path.name}\n{'=' * 70}")
     cmd = [
-        sys.executable, "-m", "scripts.train",
-        "--config", str(BASE_CONFIG),
-        "--override", str(override_path),
+        sys.executable,
+        "-m",
+        "scripts.train",
+        "--config",
+        str(BASE_CONFIG),
+        "--override",
+        str(override_path),
     ]
     subprocess.run(cmd, check=True, cwd=REPO_ROOT)
 

@@ -18,7 +18,12 @@ from imdb_gru.training import Trainer, TrainerConfig, build_loss, build_optimize
 
 
 def _synthetic_dataloaders(
-    *, vocab_size: int = 50, seq_len: int = 16, n_train: int = 40, n_val: int = 16, batch_size: int = 8
+    *,
+    vocab_size: int = 50,
+    seq_len: int = 16,
+    n_train: int = 40,
+    n_val: int = 16,
+    batch_size: int = 8,
 ) -> tuple[DataLoader, DataLoader]:
     """Generate a tiny but learnable signal: label = (mean(token_id) > vocab_size/2)."""
     torch.manual_seed(0)
@@ -89,7 +94,9 @@ def test_trainer_creates_checkpoint(tmp_path) -> None:
         loss_fn=build_loss("bce_with_logits"),
         optimizer=build_optimizer(model.parameters(), lr=1e-2),
         config=TrainerConfig(
-            epochs=2, log_dir=str(tmp_path), experiment_name="ckpt_smoke",
+            epochs=2,
+            log_dir=str(tmp_path),
+            experiment_name="ckpt_smoke",
             early_stopping_patience=None,
         ),
         device="cpu",
@@ -109,7 +116,9 @@ def test_trainer_early_stops_on_plateau(tmp_path) -> None:
         loss_fn=build_loss("bce_with_logits"),
         optimizer=build_optimizer(model.parameters(), lr=0.0),  # nothing learns
         config=TrainerConfig(
-            epochs=10, log_dir=str(tmp_path), experiment_name="es_smoke",
+            epochs=10,
+            log_dir=str(tmp_path),
+            experiment_name="es_smoke",
             early_stopping_patience=2,
         ),
         device="cpu",

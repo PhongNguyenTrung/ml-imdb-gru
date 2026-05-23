@@ -48,11 +48,11 @@ def _stable_sigmoid(z: np.ndarray) -> np.ndarray:
 
 @dataclass
 class EvaluationResult:
-    y_true: np.ndarray           # shape (N,)
-    y_pred: np.ndarray           # shape (N,)
-    y_proba: np.ndarray          # shape (N,) — sigmoid probabilities
-    confusion: np.ndarray        # shape (2, 2)
-    report: str                  # formatted classification report
+    y_true: np.ndarray  # shape (N,)
+    y_pred: np.ndarray  # shape (N,)
+    y_proba: np.ndarray  # shape (N,) — sigmoid probabilities
+    confusion: np.ndarray  # shape (2, 2)
+    report: str  # formatted classification report
     accuracy: float
     precision: float
     recall: float
