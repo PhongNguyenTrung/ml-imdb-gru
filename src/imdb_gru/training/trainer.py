@@ -72,7 +72,7 @@ class TrainingHistory:
     def append(self, log: EpochLog) -> None:
         self.epochs.append(log)
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         return {"epochs": [asdict(e) for e in self.epochs]}
 
     def save(self, path: str | Path) -> None:
@@ -123,7 +123,7 @@ class Trainer:
 
     # ----------------------------------------------------------------- public
 
-    def fit(self, train_loader: DataLoader, val_loader: DataLoader) -> TrainingHistory:
+    def fit(self, train_loader: DataLoader[Any], val_loader: DataLoader[Any]) -> TrainingHistory:
         history = TrainingHistory()
         for epoch in range(1, self.config.epochs + 1):
             t0 = time.perf_counter()
@@ -164,7 +164,7 @@ class Trainer:
 
     def _run_one_epoch(
         self,
-        loader: DataLoader,
+        loader: DataLoader[Any],
         *,
         training: bool,
         epoch: int,

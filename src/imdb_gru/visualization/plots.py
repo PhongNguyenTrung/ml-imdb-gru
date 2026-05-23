@@ -20,26 +20,31 @@ from __future__ import annotations
 import json
 from collections.abc import Iterable
 from pathlib import Path
+from typing import Any
 
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+
+HistoryLike = str | Path | dict[str, Any]
 
 
-def _load_history(history_or_path) -> list[dict]:
+def _load_history(history_or_path: HistoryLike) -> list[dict[str, Any]]:
     if isinstance(history_or_path, str | Path):
         payload = json.loads(Path(history_or_path).read_text(encoding="utf-8"))
-        return payload["epochs"]
+        epochs: list[dict[str, Any]] = list(payload["epochs"])
+        return epochs
     if isinstance(history_or_path, dict) and "epochs" in history_or_path:
-        return history_or_path["epochs"]
+        return list(history_or_path["epochs"])
     raise TypeError("history must be a path or a dict with key 'epochs'")
 
 
 def plot_learning_curves(
-    history_or_path,
+    history_or_path: HistoryLike,
     *,
     title: str = "Learning Curves",
     save_path: str | Path | None = None,
     show: bool = False,
-) -> plt.Figure:
+) -> Figure:
     """Plot Loss and Accuracy curves (Train vs Val) for a single run.
 
     Returns the ``matplotlib.figure.Figure`` for further customisation.
@@ -88,7 +93,7 @@ def plot_experiment_comparison(
     *,
     save_path: str | Path | None = None,
     show: bool = False,
-) -> plt.Figure:
+) -> Figure:
     """Overlay validation curves from multiple experiments (Req 7 reporting).
 
     Parameters

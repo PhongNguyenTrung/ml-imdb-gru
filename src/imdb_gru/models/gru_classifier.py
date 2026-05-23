@@ -190,7 +190,7 @@ class GRUClassifier(nn.Module):
         last = torch.cat([h_n[-2], h_n[-1]], dim=-1) if self.config.bidirectional else h_n[-1]
 
         last = self.dropout(last)
-        logits = self.classifier(last).squeeze(-1)  # (B,)
+        logits: torch.Tensor = self.classifier(last).squeeze(-1)  # (B,)
         return logits
 
     # -------------------------------------------------------------- utilities

@@ -57,6 +57,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+from typing import cast
 
 import torch
 from torch import nn
@@ -149,7 +150,7 @@ class GRUAttentionClassifier(nn.Module):
 
         mask = input_ids != self.config.padding_idx
         context, _ = self.attention(hiddens, mask)
-        logits = self.classifier(self.dropout(context)).squeeze(-1)
+        logits: torch.Tensor = self.classifier(self.dropout(context)).squeeze(-1)
         return logits
 
 
@@ -190,7 +191,10 @@ class SinusoidalPositionalEncoding(nn.Module):
         self.register_buffer("pe", pe.unsqueeze(0), persistent=False)  # (1, max_len, d)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return x + self.pe[:, : x.size(1)]
+        # `self.pe` is a registered buffer (Tensor). The cast tells mypy this
+        # explicitly — `register_buffer` is typed as `Tensor | Module | None`.
+        pe = cast(torch.Tensor, self.pe)
+        return x + pe[:, : x.size(1)]
 
 
 class TransformerEncoderClassifier(nn.Module):
@@ -233,4 +237,5 @@ class TransformerEncoderClassifier(nn.Module):
         # Masked mean pool — ignore <pad> positions.
         valid = (~key_padding_mask).unsqueeze(-1).float()  # (B, T, 1)
         pooled = (encoded * valid).sum(dim=1) / valid.sum(dim=1).clamp(min=1.0)
-        return self.classifier(pooled).squeeze(-1)
+        logits: torch.Tensor = self.classifier(pooled).squeeze(-1)
+        return logits

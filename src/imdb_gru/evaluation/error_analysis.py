@@ -81,7 +81,9 @@ class ErrorAnalyzer:
         else:
             raise ValueError("kind must be 'fp', 'fn', or 'both'.")
 
-        idxs = np.where(mask)[0]
+        # `np.where` returns ndarray; we may convert to a sorted Python list,
+        # so type the variable as a generic Sequence[int] up-front.
+        idxs: list[int] = [int(i) for i in np.where(mask)[0]]
         if by_confidence:
             idxs = sorted(idxs, key=lambda i: -abs(probs[i] - 0.5))
         if top_k is not None:

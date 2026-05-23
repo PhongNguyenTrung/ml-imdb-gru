@@ -120,9 +120,9 @@ def collate_batch(batch: Iterable[EncodedSample]) -> dict[str, torch.Tensor]:
 class IMDBDataModule:
     """Bundle of train/val/test DataLoaders + the fitted vocabulary."""
 
-    train_loader: DataLoader
-    val_loader: DataLoader
-    test_loader: DataLoader
+    train_loader: DataLoader[EncodedSample]
+    val_loader: DataLoader[EncodedSample]
+    test_loader: DataLoader[EncodedSample]
     vocabulary: Vocabulary
     tokenizer: RegexTokenizer
 

@@ -15,10 +15,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+from matplotlib.figure import Figure
 from sklearn.metrics import (
     classification_report,
     confusion_matrix,
@@ -68,7 +70,7 @@ class Evaluator:
         self.model.to(self.device)
 
     @torch.no_grad()
-    def evaluate(self, loader: DataLoader) -> EvaluationResult:
+    def evaluate(self, loader: DataLoader[Any]) -> EvaluationResult:
         self.model.eval()
         all_logits: list[torch.Tensor] = []
         all_labels: list[torch.Tensor] = []
@@ -109,10 +111,16 @@ class Evaluator:
         save_path: str | Path | None = None,
         normalize: bool = False,
         show: bool = False,
-    ) -> plt.Figure:
-        cm = result.confusion.astype(np.float64)
+    ) -> Figure:
+        # Keep the integer cm for `normalize=False` (so we can use "d" format);
+        # only cast to float when actually normalising.
         if normalize:
+            cm = result.confusion.astype(np.float64)
             cm = cm / cm.sum(axis=1, keepdims=True).clip(min=1e-9)
+            fmt = ".2f"
+        else:
+            cm = result.confusion.astype(np.int64)
+            fmt = "d"
 
         fig, ax = plt.subplots(figsize=(5, 4.5))
         im = ax.imshow(cm, interpolation="nearest", cmap="Blues")
@@ -128,7 +136,6 @@ class Evaluator:
             f"acc={result.accuracy:.4f}  F1={result.f1:.4f}"
         )
 
-        fmt = ".2f" if normalize else "d"
         threshold = cm.max() / 2.0
         for i in range(2):
             for j in range(2):
