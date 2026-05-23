@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pytest
-
 from imdb_gru.data.vocabulary import (
     PAD_INDEX,
     PAD_TOKEN,

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import torch
-
 from imdb_gru.data.dataset import IMDBDataset, collate_batch
 from imdb_gru.data.preprocessing import RegexTokenizer
 from imdb_gru.data.vocabulary import PAD_INDEX, Vocabulary

@@ -4,9 +4,8 @@ from __future__ import annotations
 
 import pytest
 import torch
-from torch import nn
-
 from imdb_gru.training.callbacks import EarlyStopping, ModelCheckpoint
+from torch import nn
 
 # ---------------------------------------------------------------- EarlyStopping
 
