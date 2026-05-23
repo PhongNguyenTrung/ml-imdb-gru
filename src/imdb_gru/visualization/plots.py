@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 
 
 def _load_history(history_or_path) -> list[dict]:
-    if isinstance(history_or_path, (str, Path)):
+    if isinstance(history_or_path, str | Path):
         payload = json.loads(Path(history_or_path).read_text(encoding="utf-8"))
         return payload["epochs"]
     if isinstance(history_or_path, dict) and "epochs" in history_or_path:
