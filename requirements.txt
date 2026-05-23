@@ -1,0 +1,16 @@
+# =============================================================================
+# This file mirrors the runtime dependencies declared in `pyproject.toml`.
+# It is kept for legacy tooling (Colab `!pip install -r requirements.txt`,
+# Dependabot pip ecosystem scanning). The CANONICAL source of truth is
+# `pyproject.toml [project.dependencies]`. If you bump versions, update both.
+# =============================================================================
+torch>=2.2,<3.0
+datasets>=2.18
+scikit-learn>=1.4
+numpy>=1.26
+pandas>=2.2
+matplotlib>=3.8
+seaborn>=0.13
+tqdm>=4.66
+pyyaml>=6.0
+tensorboard>=2.16

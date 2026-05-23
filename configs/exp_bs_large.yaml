@@ -1,0 +1,13 @@
+# =============================================================================
+# Experiment 3 (Req 7) — Larger batch size
+# -----------------------------------------------------------------------------
+# Tests batch_size 256 vs base 64. Larger batches yield smoother gradient
+# estimates (smaller variance) but fewer parameter updates per epoch; the
+# typical literature finding is a small accuracy loss unless the learning
+# rate is scaled — we deliberately hold LR constant here to *expose* that
+# trade-off in the comparison report.
+# =============================================================================
+training:
+  batch_size: 256
+logging:
+  experiment_name: "exp_bs_large"

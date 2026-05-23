@@ -1,0 +1,10 @@
+# =============================================================================
+# Experiment 2 (Req 7) — Low learning rate
+# -----------------------------------------------------------------------------
+# Tests whether a conservative 5x-lower LR (2e-4) trades training speed for
+# better final generalization (smaller steps → less noisy SGD path).
+# =============================================================================
+training:
+  learning_rate: 2.0e-4
+logging:
+  experiment_name: "exp_lr_low"

@@ -1,0 +1,43 @@
+# =============================================================================
+# Base configuration — IMDB-GRU
+# -----------------------------------------------------------------------------
+# Placeholder defaults. Fields will be consumed by modules as each Req is
+# implemented; do NOT rely on them yet. Override via experiment configs
+# (e.g. configs/exp_lr_high.yaml) for Req 7 sweeps.
+# =============================================================================
+
+seed: 42
+
+data:
+  dataset_name: "imdb"
+  val_split: 0.1            # held-out from train, no leakage
+  max_len: 256
+  vocab_size: 10000
+  num_workers: 2
+
+model:
+  embed_dim: 128
+  hidden_dim: 128
+  num_layers: 1
+  bidirectional: false
+  dropout: 0.3
+  # NB: head is single-logit (BCEWithLogitsLoss); no `num_classes` field needed.
+
+training:
+  epochs: 10
+  batch_size: 64
+  learning_rate: 1.0e-3
+  weight_decay: 1.0e-5
+  early_stopping_patience: 3
+  grad_clip: 1.0
+  loss: "bce_with_logits"   # alternative: "cross_entropy"
+  optimizer: "adam"
+
+logging:
+  log_dir: "artifacts/runs"
+  experiment_name: "base"
+  log_every_n_steps: 50
+
+evaluation:
+  checkpoint_path: "artifacts/best.pt"
+  report_dir: "reports/figures"

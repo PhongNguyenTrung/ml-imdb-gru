@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "imdb-gru"
+version = "0.1.0"
+description = "IMDB Sentiment Analysis with GRU — a PyTorch R&D project"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Paul Nguyen", email = "paul.nguyen@envato.com" }]
+keywords = ["nlp", "sentiment-analysis", "gru", "pytorch", "imdb", "deep-learning"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "torch>=2.2,<3.0",
+    "datasets>=2.18",
+    "scikit-learn>=1.4",
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+    "tqdm>=4.66",
+    "pyyaml>=6.0",
+    "tensorboard>=2.16",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=4.1",
+    "ruff>=0.4",
+    "black>=24.3",
+    "mypy>=1.9",
+    "pre-commit>=3.6",
+    "ipykernel>=6.29",
+    "jupyter>=1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/PhongNguyenTrung/ml-imdb-gru"
+Repository = "https://github.com/PhongNguyenTrung/ml-imdb-gru"
+Issues = "https://github.com/PhongNguyenTrung/ml-imdb-gru/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "B", "UP", "SIM", "RUF"]
+ignore = ["E501"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --cov=imdb_gru --cov-report=term-missing"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true

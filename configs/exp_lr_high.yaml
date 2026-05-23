@@ -1,0 +1,11 @@
+# =============================================================================
+# Experiment 1 (Req 7) — High learning rate
+# -----------------------------------------------------------------------------
+# Tests whether an aggressive 5x LR (5e-3) accelerates convergence or causes
+# divergence / oscillation on the GRU's recurrent dynamics. Same architecture
+# and batch size as base for an apples-to-apples comparison.
+# =============================================================================
+training:
+  learning_rate: 5.0e-3
+logging:
+  experiment_name: "exp_lr_high"

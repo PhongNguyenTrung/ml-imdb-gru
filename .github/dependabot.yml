@@ -1,0 +1,87 @@
+# =============================================================================
+# Dependabot — automated dependency upkeep
+# -----------------------------------------------------------------------------
+# Two ecosystems are tracked:
+#   1. pip            — Python packages declared in pyproject.toml / requirements.txt
+#   2. github-actions — versions of the actions used in .github/workflows/*.yml
+#
+# Updates are batched weekly to avoid PR noise; security advisories arrive
+# out-of-band regardless of schedule.
+# =============================================================================
+version: 2
+updates:
+  # --------------------------------------------------------- Python packages
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Asia/Ho_Chi_Minh"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "python"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    # Group related upgrades into a single PR — easier to review & auto-merge.
+    groups:
+      ml-framework:
+        # Treat torch + its peers as one unit; an isolated torch bump can
+        # break older numpy/pandas combos.
+        patterns:
+          - "torch"
+          - "torchvision"
+          - "torchaudio"
+          - "numpy"
+          - "scipy"
+        update-types:
+          - "minor"
+          - "patch"
+      dev-tooling:
+        patterns:
+          - "ruff"
+          - "black"
+          - "mypy"
+          - "pytest*"
+          - "pre-commit"
+          - "ipykernel"
+          - "jupyter"
+        update-types:
+          - "minor"
+          - "patch"
+      data-stack:
+        patterns:
+          - "datasets"
+          - "scikit-learn"
+          - "pandas"
+          - "matplotlib"
+          - "seaborn"
+        update-types:
+          - "minor"
+          - "patch"
+    # Pin major bumps to a separate PR per package (needs human review).
+    ignore: []
+
+  # --------------------------------------------------------- GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Asia/Ho_Chi_Minh"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "ci"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    groups:
+      gha-actions:
+        patterns: ["*"]
+        update-types:
+          - "minor"
+          - "patch"

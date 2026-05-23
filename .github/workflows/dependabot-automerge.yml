@@ -1,0 +1,55 @@
+name: Dependabot auto-merge
+
+# Auto-merges Dependabot PRs that pass CI, but ONLY for patch/minor bumps.
+# Major version bumps remain manual — they often introduce breaking changes
+# (especially in the torch/numpy ML stack) that demand human review.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependabot:
+    name: Auto-merge (patch & minor)
+    runs-on: ubuntu-latest
+    # Only run for Dependabot-authored PRs.
+    if: github.actor == 'dependabot[bot]' && github.event.pull_request.user.login == 'dependabot[bot]'
+    steps:
+      - name: Fetch Dependabot metadata
+        id: meta
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Approve PR
+        # Patch / minor / GitHub-Actions updates get a maintainer approval so
+        # branch-protection rules requiring one approver are satisfied.
+        if: |
+          steps.meta.outputs.update-type == 'version-update:semver-patch' ||
+          steps.meta.outputs.update-type == 'version-update:semver-minor'
+        run: 'gh pr review --approve "$PR_URL" --body "Auto-approved by Dependabot (${{ steps.meta.outputs.update-type }})."'
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge (squash)
+        # `--auto` queues the merge for when all required checks pass and any
+        # required reviews are satisfied. Squash keeps history linear and
+        # makes the bot's PRs collapse to a single dependency-bump commit.
+        if: |
+          steps.meta.outputs.update-type == 'version-update:semver-patch' ||
+          steps.meta.outputs.update-type == 'version-update:semver-minor'
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Label major bumps for manual review
+        if: steps.meta.outputs.update-type == 'version-update:semver-major'
+        run: gh pr edit "$PR_URL" --add-label "needs-review,major-bump"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
