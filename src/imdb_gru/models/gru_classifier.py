@@ -185,12 +185,9 @@ class GRUClassifier(nn.Module):
         # h_n: (num_layers * num_dirs, B, H)
         _, h_n = self.gru(packed)
 
-        if self.config.bidirectional:
-            # Concatenate the last layer's forward + backward final states.
-            # Layout: h_n[-2] is forward, h_n[-1] is backward at the top layer.
-            last = torch.cat([h_n[-2], h_n[-1]], dim=-1)  # (B, 2H)
-        else:
-            last = h_n[-1]  # (B, H)
+        # Bidirectional: concat last layer's forward + backward final states (B, 2H).
+        # Otherwise: just the top-layer hidden state (B, H).
+        last = torch.cat([h_n[-2], h_n[-1]], dim=-1) if self.config.bidirectional else h_n[-1]
 
         last = self.dropout(last)
         logits = self.classifier(last).squeeze(-1)  # (B,)

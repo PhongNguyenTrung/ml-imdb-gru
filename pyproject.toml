@@ -63,7 +63,10 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "B", "UP", "SIM", "RUF"]
-ignore = ["E501"]
+# RUF001/2/3: "ambiguous unicode" rules flag mathematical notation in docstrings
+# (ℤ, ℝ, ×, ·, ∈, etc.). These characters are intentional for academic clarity;
+# this is an R&D project where the math IS the deliverable.
+ignore = ["E501", "RUF001", "RUF002", "RUF003"]
 
 [tool.black]
 line-length = 100

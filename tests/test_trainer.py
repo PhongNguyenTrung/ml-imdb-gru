@@ -11,10 +11,9 @@ import json
 
 import pytest
 import torch
-from torch.utils.data import DataLoader, TensorDataset
-
 from imdb_gru.models import GRUClassifier, GRUClassifierConfig
 from imdb_gru.training import Trainer, TrainerConfig, build_loss, build_optimizer
+from torch.utils.data import DataLoader, TensorDataset
 
 
 def _synthetic_dataloaders(
@@ -34,7 +33,7 @@ def _synthetic_dataloaders(
         lengths = torch.full((n,), seq_len, dtype=torch.long)
 
         def collate(batch):
-            xs, ys, ls = zip(*batch)
+            xs, ys, ls = zip(*batch, strict=True)
             return {
                 "input_ids": torch.stack(xs),
                 "labels": torch.stack(ys),

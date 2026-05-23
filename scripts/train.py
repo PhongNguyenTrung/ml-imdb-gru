@@ -16,7 +16,6 @@ import json
 from pathlib import Path
 
 import torch
-
 from imdb_gru.data import IMDBLoader, build_dataloaders
 from imdb_gru.models import GRUClassifier, GRUClassifierConfig
 from imdb_gru.training import Trainer, TrainerConfig, build_loss, build_optimizer
@@ -107,7 +106,7 @@ def main() -> None:
     )
 
     print(f"[train] device={device} | experiment={trainer_cfg.experiment_name}")
-    history = trainer.fit(dm.train_loader, dm.val_loader)
+    trainer.fit(dm.train_loader, dm.val_loader)
 
     # Persist run config + vocabulary alongside the model.
     run_dir = Path(trainer_cfg.log_dir) / trainer_cfg.experiment_name

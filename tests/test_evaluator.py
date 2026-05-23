@@ -5,11 +5,10 @@ from __future__ import annotations
 import numpy as np
 import pytest
 import torch
-from torch import nn
-from torch.utils.data import DataLoader, TensorDataset
-
 from imdb_gru.evaluation import ErrorAnalyzer, Evaluator
 from imdb_gru.evaluation.evaluator import EvaluationResult, _stable_sigmoid
+from torch import nn
+from torch.utils.data import DataLoader, TensorDataset
 
 
 class _DummyModel(nn.Module):
@@ -29,7 +28,7 @@ def _make_loader(input_ids, labels) -> DataLoader:
     lengths = torch.full((len(labels),), input_ids.size(1), dtype=torch.long)
 
     def collate(batch):
-        xs, ys, ls = zip(*batch)
+        xs, ys, ls = zip(*batch, strict=True)
         return {"input_ids": torch.stack(xs), "labels": torch.stack(ys), "lengths": torch.stack(ls)}
 
     ds = TensorDataset(input_ids, labels, lengths)
