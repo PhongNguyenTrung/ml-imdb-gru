@@ -64,7 +64,6 @@ from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
 from imdb_gru.models.gru_classifier import GRUClassifierConfig
 
-
 # =============================================================================
 # 1) GRU + Additive Self-Attention pooling
 # =============================================================================

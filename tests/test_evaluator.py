@@ -8,7 +8,6 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 
-from imdb_gru.data.loader import LABEL_NAMES
 from imdb_gru.evaluation import ErrorAnalyzer, Evaluator
 from imdb_gru.evaluation.evaluator import EvaluationResult, _stable_sigmoid
 

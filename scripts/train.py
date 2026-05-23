@@ -52,7 +52,7 @@ def main() -> None:
     device = pick_device(args.device)
 
     # ----- Data ------------------------------------------------------------
-    print(f"[train] loading IMDB dataset...")
+    print("[train] loading IMDB dataset...")
     loader = IMDBLoader(seed=cfg.get("seed", 42))
     train_split, test_split = loader.train, loader.test
 

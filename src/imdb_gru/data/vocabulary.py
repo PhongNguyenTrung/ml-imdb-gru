@@ -78,7 +78,7 @@ class Vocabulary:
 
     # --------------------------------------------------------------------- fit
 
-    def fit(self, tokenized_corpus: Iterable[Iterable[str]]) -> "Vocabulary":
+    def fit(self, tokenized_corpus: Iterable[Iterable[str]]) -> Vocabulary:
         """Fit the vocabulary on an iterable of tokenized documents.
 
         IMPORTANT — must be called on TRAIN tokens only to avoid data leakage
@@ -139,7 +139,7 @@ class Vocabulary:
         path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     @classmethod
-    def load(cls, path: str | Path) -> "Vocabulary":
+    def load(cls, path: str | Path) -> Vocabulary:
         payload = json.loads(Path(path).read_text(encoding="utf-8"))
         vocab = cls(max_size=payload["max_size"], min_freq=payload["min_freq"])
         vocab.index_to_token = list(payload["index_to_token"])

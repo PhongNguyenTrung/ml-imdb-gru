@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 import torch
+from torch.utils.data import DataLoader
 
 from imdb_gru.data import IMDBLoader, RegexTokenizer, Vocabulary
 from imdb_gru.data.dataset import IMDBDataset, collate_batch
@@ -19,7 +20,6 @@ from imdb_gru.evaluation import ErrorAnalyzer, Evaluator
 from imdb_gru.models import GRUClassifier, GRUClassifierConfig
 from imdb_gru.utils import set_seed
 from imdb_gru.visualization import plot_learning_curves
-from torch.utils.data import DataLoader
 
 
 def parse_args() -> argparse.Namespace:

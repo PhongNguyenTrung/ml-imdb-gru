@@ -110,7 +110,7 @@ class ErrorAnalyzer:
 
         n_total = len(self.result.y_true)
         n_errors = int((self.result.y_pred != self.result.y_true).sum())
-        print(f"\n=== Error Analysis ===")
+        print("\n=== Error Analysis ===")
         print(f"Test samples: {n_total}")
         print(f"Total errors: {n_errors}  (error rate = {n_errors / n_total:.2%})")
         print(f"False Positives (true={LABEL_NAMES[0]}, pred={LABEL_NAMES[1]}): {self.result.confusion[0, 1]}")

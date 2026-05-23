@@ -222,7 +222,7 @@ class Trainer:
         of the trainer must still work if it's missing or fails to initialise.
         """
         try:
-            from torch.utils.tensorboard import SummaryWriter  # noqa: WPS433
+            from torch.utils.tensorboard import SummaryWriter
             return SummaryWriter(log_dir=str(self.run_dir / "tb"))
         except Exception:  # pragma: no cover — TB missing or init failed
             return None

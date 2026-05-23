@@ -12,17 +12,17 @@ from imdb_gru.data.preprocessing import RegexTokenizer
 from imdb_gru.data.vocabulary import PAD_INDEX, PAD_TOKEN, UNK_INDEX, UNK_TOKEN, Vocabulary
 
 __all__ = [
+    "LABEL_NAMES",
+    "PAD_INDEX",
+    "PAD_TOKEN",
+    "UNK_INDEX",
+    "UNK_TOKEN",
     "EncodedSample",
     "IMDBDataModule",
     "IMDBDataset",
     "IMDBLoader",
-    "LABEL_NAMES",
-    "PAD_INDEX",
-    "PAD_TOKEN",
     "RawSample",
     "RegexTokenizer",
-    "UNK_INDEX",
-    "UNK_TOKEN",
     "Vocabulary",
     "build_dataloaders",
     "collate_batch",

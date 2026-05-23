@@ -128,8 +128,8 @@ class IMDBDataModule:
 
 
 def build_dataloaders(
-    train_split: "HFDataset",
-    test_split: "HFDataset",
+    train_split: HFDataset,
+    test_split: HFDataset,
     *,
     val_ratio: float = 0.1,
     max_len: int = 256,

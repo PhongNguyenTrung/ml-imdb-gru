@@ -8,7 +8,6 @@ from torch import nn
 
 from imdb_gru.training.callbacks import EarlyStopping, ModelCheckpoint
 
-
 # ---------------------------------------------------------------- EarlyStopping
 
 
