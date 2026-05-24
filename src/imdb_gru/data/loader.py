@@ -8,7 +8,7 @@ Dataset reference
 Maas, A. L., Daly, R. E., Pham, P. T., Huang, D., Ng, A. Y., & Potts, C. (2011).
 *Learning Word Vectors for Sentiment Analysis*. ACL 2011.
 
-The HF mirror provides:
+The HF mirror at ``stanfordnlp/imdb`` provides:
 
 * ``train``: 25,000 reviews (balanced 12,500 pos / 12,500 neg)
 * ``test``:  25,000 reviews (same balance)
@@ -24,7 +24,10 @@ from dataclasses import dataclass
 
 from datasets import Dataset, DatasetDict, load_dataset
 
-DEFAULT_DATASET_NAME = "imdb"
+# Recent versions of `huggingface_hub` reject bare-name dataset identifiers
+# ("imdb") and require the canonical `namespace/name` form. The IMDB corpus
+# now lives under `stanfordnlp/imdb` on the Hub.
+DEFAULT_DATASET_NAME = "stanfordnlp/imdb"
 LABEL_NAMES: tuple[str, str] = ("negative", "positive")
 
 
@@ -47,7 +50,7 @@ class IMDBLoader:
     Parameters
     ----------
     dataset_name : str
-        HF dataset identifier. Defaults to ``"imdb"``.
+        HF dataset identifier. Defaults to ``"stanfordnlp/imdb"``.
     cache_dir : str | None
         Optional cache directory for HF datasets. ``None`` uses the HF default.
     seed : int
