@@ -25,7 +25,11 @@ def main() -> None:
     )
     parser.add_argument("--split", default="train", choices=["train", "test"])
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--cache-dir", default=None)
+    parser.add_argument(
+        "--cache-dir",
+        default="data",
+        help="HF dataset cache directory (project-local by default; set 'None' to use ~/.cache).",
+    )
     args = parser.parse_args()
 
     if args.n_samples < 5:

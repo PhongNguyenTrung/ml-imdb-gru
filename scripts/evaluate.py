@@ -54,7 +54,10 @@ def main() -> None:
     device = pick_device(args.device)
 
     # 1) Load test split + the *training-time* vocabulary (no leakage).
-    loader = IMDBLoader()
+    loader = IMDBLoader(
+        dataset_name=cfg["data"].get("dataset_name", "stanfordnlp/imdb"),
+        cache_dir=cfg["data"].get("cache_dir"),
+    )
     test_split = loader.test
     vocab = Vocabulary.load(run_dir / "vocab.json")
     tokenizer = RegexTokenizer()

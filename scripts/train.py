@@ -52,7 +52,11 @@ def main() -> None:
 
     # ----- Data ------------------------------------------------------------
     print("[train] loading IMDB dataset...")
-    loader = IMDBLoader(seed=cfg.get("seed", 42))
+    loader = IMDBLoader(
+        dataset_name=cfg["data"].get("dataset_name", "stanfordnlp/imdb"),
+        cache_dir=cfg["data"].get("cache_dir"),
+        seed=cfg.get("seed", 42),
+    )
     train_split, test_split = loader.train, loader.test
 
     dm = build_dataloaders(

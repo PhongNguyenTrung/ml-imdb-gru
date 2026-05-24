@@ -9,7 +9,8 @@
 seed: 42
 
 data:
-  dataset_name: "imdb"
+  dataset_name: "stanfordnlp/imdb"
+  cache_dir: "data"         # project-local HF cache (gitignored; keeps ~/.cache clean)
   val_split: 0.1            # held-out from train, no leakage
   max_len: 256
   vocab_size: 10000
